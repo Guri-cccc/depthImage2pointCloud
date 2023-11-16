@@ -100,26 +100,20 @@ pcl::PointCloud<pcl::PointXYZ> PointCloudProjection::GetPointCloud(cv::Mat depth
 
     pcl::PointCloud<pcl::PointXYZ> cloud;
 
-    // Traverse the depth image 
     for (int v = 0; v < depth_pic.rows; ++v)
     {
         for (int u = 0; u < depth_pic.cols; ++u)
         {
             float d = depth_pic.ptr<float>(v)[u];
-
-            // Check for invalid measurements
             if (d == 0)
                 continue;
-            // if d has a value, add a point to the point cloud 
 
             pcl::PointXYZ pt;
 
-            // Fill in XYZ
             pt.z = double(d) / camera_factor;
             pt.x = (u - camera_cx) * pt.z / camera_fx;
             pt.y = (v - camera_cy) * pt.z / camera_fy;
 
-            // add p to the point cloud 
             cloud.points.push_back(pt);
         }
     }
